@@ -4,9 +4,17 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h2 class="page-title mb-1">Data Kriteria</h2>
-        <p class="text-muted mb-0">Kelola kriteria dan bobot metode Weighted Product.</p>
+        <p class="text-muted mb-0">
+            @if(auth()->user()->isAdmin())
+                Kelola kriteria dan bobot metode Weighted Product.
+            @else
+                Daftar kriteria dan bobot yang digunakan dalam metode Weighted Product.
+            @endif
+        </p>
     </div>
-    <a href="{{ route('criteria.create') }}" class="btn btn-primary">Tambah Kriteria</a>
+    @if(auth()->user()->isAdmin())
+        <a href="{{ route('criteria.create') }}" class="btn btn-primary">Tambah Kriteria</a>
+    @endif
 </div>
 
 <div class="card shadow-sm border-0">
@@ -20,7 +28,9 @@
                     <th>Atribut</th>
                     <th>Bobot</th>
                     <th>Deskripsi</th>
-                    <th width="20%">Aksi</th>
+                    @if(auth()->user()->isAdmin())
+                        <th width="20%">Aksi</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -38,19 +48,21 @@
                         </td>
                         <td>{{ $criterion->weight }}</td>
                         <td>{{ $criterion->description ?? '-' }}</td>
-                        <td>
-                            <a href="{{ route('criteria.show', $criterion->id) }}" class="btn btn-info btn-sm text-white">Detail</a>
-                            <a href="{{ route('criteria.edit', $criterion->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('criteria.destroy', $criterion->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus kriteria ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                            </form>
-                        </td>
+                        @if(auth()->user()->isAdmin())
+                            <td>
+                                <a href="{{ route('criteria.show', $criterion->id) }}" class="btn btn-info btn-sm text-white">Detail</a>
+                                <a href="{{ route('criteria.edit', $criterion->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <form action="{{ route('criteria.destroy', $criterion->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus kriteria ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                </form>
+                            </td>
+                        @endif
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="text-center">Belum ada data kriteria.</td>
+                        <td colspan="{{ auth()->user()->isAdmin() ? '7' : '6' }}" class="text-center">Belum ada data kriteria.</td>
                     </tr>
                 @endforelse
             </tbody>

@@ -47,11 +47,32 @@
 </div>
 
 <div class="row g-4 mb-4">
-    <div class="col-md-12">
+    <div class="col-md-6">
         <div class="card card-stat shadow-sm">
             <div class="card-body">
                 <h6 class="text-muted">Total Data Penilaian</h6>
                 <h2 class="fw-bold">{{ $totalStockValues }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card card-stat shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Total User</h6>
+                <h2 class="fw-bold">{{ $totalUsers }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card card-stat shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">User Menunggu Persetujuan</h6>
+                <h2 class="fw-bold {{ $pendingUsers > 0 ? 'text-warning' : '' }}">{{ $pendingUsers }}</h2>
+                @if($pendingUsers > 0)
+                    <a href="{{ route('admin.users.index') }}" class="small text-decoration-none">Lihat &rarr;</a>
+                @endif
             </div>
         </div>
     </div>

@@ -31,6 +31,11 @@
             background: #fff;
             border-top: 1px solid #dee2e6;
         }
+
+        .role-badge {
+            font-size: 0.7rem;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
@@ -51,11 +56,15 @@
                             Dashboard
                         </a>
                     </li>
+
+                    @if(auth()->user()->isAdmin())
                     <li class="nav-item">
                         <a href="{{ route('stocks.index') }}" class="nav-link {{ request()->routeIs('stocks.*') ? 'active fw-semibold' : '' }}">
                             Saham
                         </a>
                     </li>
+                    @endif
+
                     <li class="nav-item">
                         <a href="{{ route('periods.index') }}" class="nav-link {{ request()->routeIs('periods.*') ? 'active fw-semibold' : '' }}">
                             Periode
@@ -66,6 +75,8 @@
                             Kriteria
                         </a>
                     </li>
+
+                    @if(auth()->user()->isAdmin())
                     <li class="nav-item">
                         <a href="{{ route('stock-values.index') }}" class="nav-link {{ request()->routeIs('stock-values.*') ? 'active fw-semibold' : '' }}">
                             Penilaian
@@ -76,15 +87,37 @@
                             Perhitungan
                         </a>
                     </li>
+                    @endif
+
                     <li class="nav-item">
                         <a href="{{ route('rankings.index') }}" class="nav-link {{ request()->routeIs('rankings.*') ? 'active fw-semibold' : '' }}">
                             Ranking
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('simulation.index') }}" class="nav-link {{ request()->routeIs('simulation.*') ? 'active fw-semibold' : '' }}">
+                            Simulasi
+                        </a>
+                    </li>
+
+                    @if(auth()->user()->isAdmin())
+                    <li class="nav-item">
+                        <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users.*') ? 'active fw-semibold' : '' }}">
+                            Manajemen User
+                        </a>
+                    </li>
+                    @endif
                 </ul>
 
                 <div class="d-flex align-items-center text-white">
-                    <span class="me-3">Halo, {{ auth()->user()->name }}</span>
+                    <span class="me-3">
+                        Halo, {{ auth()->user()->name }}
+                        @if(auth()->user()->isAdmin())
+                            <span class="badge bg-warning text-dark role-badge">Admin</span>
+                        @else
+                            <span class="badge bg-light text-dark role-badge">User</span>
+                        @endif
+                    </span>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="btn btn-light btn-sm">Logout</button>

@@ -8,7 +8,15 @@
             Periode: <strong>{{ $period->name }} ({{ $period->year }})</strong>
         </p>
     </div>
-    <a href="{{ route('rankings.index') }}" class="btn btn-secondary">Kembali</a>
+    <div class="d-flex gap-2">
+        <a href="{{ route('export.ranking.pdf', $period->id) }}" class="btn btn-danger btn-sm">
+            📄 Export PDF
+        </a>
+        <a href="{{ route('export.ranking.excel', $period->id) }}" class="btn btn-success btn-sm">
+            📊 Export Excel
+        </a>
+        <a href="{{ route('rankings.index') }}" class="btn btn-secondary btn-sm">Kembali</a>
+    </div>
 </div>
 
 <div class="card shadow-sm border-0 mb-4">

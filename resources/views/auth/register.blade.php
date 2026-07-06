@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - SPK Saham Bank</title>
+    <title>Daftar - SPK Saham Bank</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <style>
         body {
@@ -24,7 +24,7 @@
             <div class="col-md-5">
                 <div class="card shadow login-card">
                     <div class="card-body p-4">
-                        <h3 class="text-center fw-bold mb-3">Login</h3>
+                        <h3 class="text-center fw-bold mb-3">Daftar Akun Baru</h3>
                         <p class="text-center text-muted mb-4">
                             Sistem Pendukung Keputusan Pemilihan Saham Terbaik
                         </p>
@@ -41,12 +41,20 @@
                             </div>
                         @endif
 
-                        <form action="{{ route('login.post') }}" method="POST">
+                        <form action="{{ route('register.post') }}" method="POST">
                             @csrf
 
                             <div class="mb-3">
+                                <label class="form-label">Nama</label>
+                                <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="Masukkan nama lengkap" required>
+                                @error('name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
                                 <label class="form-label">Email</label>
-                                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" placeholder="Masukkan email">
+                                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" placeholder="Masukkan email" required>
                                 @error('email')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -54,18 +62,23 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Password</label>
-                                <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Masukkan password">
+                                <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Masukkan password" required>
                                 @error('password')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <button type="submit" class="btn btn-primary w-100">Login</button>
+                            <div class="mb-3">
+                                <label class="form-label">Konfirmasi Password</label>
+                                <input type="password" name="password_confirmation" class="form-control" placeholder="Ulangi password" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">Daftar</button>
                         </form>
 
-                        <div class="mt-4 text-center">
+                        <div class="text-center mt-3">
                             <small class="text-muted">
-                                Belum punya akun? <a href="{{ route('register') }}" class="text-decoration-none">Daftar di sini</a>
+                                Sudah punya akun? <a href="{{ route('login') }}">Login di sini</a>
                             </small>
                         </div>
                     </div>
