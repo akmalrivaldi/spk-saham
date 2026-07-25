@@ -5,157 +5,251 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'SPK Saham Bank' }}</title>
 
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        .navbar-brand {
-            font-weight: 700;
-        }
-
-        .page-title {
-            font-weight: 700;
-        }
-
-        .card-stat {
-            border: none;
-            border-radius: 14px;
-        }
-
-        .footer {
-            margin-top: 60px;
-            padding: 20px 0;
-            background: #fff;
-            border-top: 1px solid #dee2e6;
-        }
-
-        .role-badge {
-            font-size: 0.7rem;
-            vertical-align: middle;
-        }
-    </style>
+    <!-- Modern CSS -->
+    <link href="{{ asset('css/modern.css') }}" rel="stylesheet">
 </head>
 <body>
 
     @auth
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="{{ route('dashboard') }}">SPK Saham Bank</a>
+    <!-- Sidebar -->
+    <aside id="sidebar">
+        <a href="{{ route('dashboard') }}" class="sidebar-brand">
+            <i class="ph-fill ph-chart-line-up"></i>
+            <span>SPK Saham</span>
+        </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarApp" aria-controls="navbarApp" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+        <div class="sidebar-nav">
+            <div class="sidebar-heading">Menu Utama</div>
+            
+            <div class="nav-item">
+                <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                    <i class="ph ph-squares-four"></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+
+            @if(auth()->user()->isAdmin())
+            <div class="nav-item">
+                <a href="{{ route('stocks.index') }}" class="nav-link {{ request()->routeIs('stocks.*') ? 'active' : '' }}">
+                    <i class="ph ph-buildings"></i>
+                    <span>Data Saham</span>
+                </a>
+            </div>
+            @endif
+
+            <div class="nav-item">
+                <a href="{{ route('periods.index') }}" class="nav-link {{ request()->routeIs('periods.*') ? 'active' : '' }}">
+                    <i class="ph ph-calendar-blank"></i>
+                    <span>Periode</span>
+                </a>
+            </div>
+            
+            <div class="nav-item">
+                <a href="{{ route('criteria.index') }}" class="nav-link {{ request()->routeIs('criteria.*') ? 'active' : '' }}">
+                    <i class="ph ph-list-numbers"></i>
+                    <span>Kriteria</span>
+                </a>
+            </div>
+
+            <div class="sidebar-heading">Penilaian (WP)</div>
+
+            @if(auth()->user()->isAdmin())
+            <div class="nav-item">
+                <a href="{{ route('stock-values.index') }}" class="nav-link {{ request()->routeIs('stock-values.*') ? 'active' : '' }}">
+                    <i class="ph ph-exam"></i>
+                    <span>Nilai Alternatif</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="{{ route('calculations.index') }}" class="nav-link {{ request()->routeIs('calculations.*') ? 'active' : '' }}">
+                    <i class="ph ph-calculator"></i>
+                    <span>Perhitungan</span>
+                </a>
+            </div>
+            @endif
+
+            <div class="nav-item">
+                <a href="{{ route('rankings.index') }}" class="nav-link {{ request()->routeIs('rankings.*') ? 'active' : '' }}">
+                    <i class="ph ph-trophy"></i>
+                    <span>Hasil Ranking</span>
+                </a>
+            </div>
+            
+            <div class="nav-item">
+                <a href="{{ route('simulation.index') }}" class="nav-link {{ request()->routeIs('simulation.*') ? 'active' : '' }}">
+                    <i class="ph ph-flask"></i>
+                    <span>Simulasi Bobot</span>
+                </a>
+            </div>
+
+            @if(auth()->user()->isAdmin())
+            <div class="sidebar-heading">Pengaturan</div>
+            <div class="nav-item">
+                <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                    <i class="ph ph-users"></i>
+                    <span>Manajemen User</span>
+                </a>
+            </div>
+            @endif
+        </div>
+    </aside>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper">
+        <!-- Topbar -->
+        <header class="topbar">
+            <button class="topbar-toggler" id="sidebarToggle">
+                <i class="ph ph-list"></i>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarApp">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active fw-semibold' : '' }}">
-                            Dashboard
-                        </a>
-                    </li>
-
-                    @if(auth()->user()->isAdmin())
-                    <li class="nav-item">
-                        <a href="{{ route('stocks.index') }}" class="nav-link {{ request()->routeIs('stocks.*') ? 'active fw-semibold' : '' }}">
-                            Saham
-                        </a>
-                    </li>
-                    @endif
-
-                    <li class="nav-item">
-                        <a href="{{ route('periods.index') }}" class="nav-link {{ request()->routeIs('periods.*') ? 'active fw-semibold' : '' }}">
-                            Periode
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('criteria.index') }}" class="nav-link {{ request()->routeIs('criteria.*') ? 'active fw-semibold' : '' }}">
-                            Kriteria
-                        </a>
-                    </li>
-
-                    @if(auth()->user()->isAdmin())
-                    <li class="nav-item">
-                        <a href="{{ route('stock-values.index') }}" class="nav-link {{ request()->routeIs('stock-values.*') ? 'active fw-semibold' : '' }}">
-                            Penilaian
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('calculations.index') }}" class="nav-link {{ request()->routeIs('calculations.*') ? 'active fw-semibold' : '' }}">
-                            Perhitungan
-                        </a>
-                    </li>
-                    @endif
-
-                    <li class="nav-item">
-                        <a href="{{ route('rankings.index') }}" class="nav-link {{ request()->routeIs('rankings.*') ? 'active fw-semibold' : '' }}">
-                            Ranking
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('simulation.index') }}" class="nav-link {{ request()->routeIs('simulation.*') ? 'active fw-semibold' : '' }}">
-                            Simulasi
-                        </a>
-                    </li>
-
-                    @if(auth()->user()->isAdmin())
-                    <li class="nav-item">
-                        <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users.*') ? 'active fw-semibold' : '' }}">
-                            Manajemen User
-                        </a>
-                    </li>
-                    @endif
-                </ul>
-
-                <div class="d-flex align-items-center text-white">
-                    <span class="me-3">
-                        Halo, {{ auth()->user()->name }}
-                        @if(auth()->user()->isAdmin())
-                            <span class="badge bg-warning text-dark role-badge">Admin</span>
-                        @else
-                            <span class="badge bg-light text-dark role-badge">User</span>
-                        @endif
-                    </span>
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="btn btn-light btn-sm">Logout</button>
-                    </form>
+            <div class="topbar-right">
+                <div class="user-profile">
+                    <div class="user-info text-end me-2 d-none d-md-flex">
+                        <span class="user-name">{{ auth()->user()->name }}</span>
+                        <span class="user-role">{{ auth()->user()->isAdmin() ? 'Administrator' : 'Pengguna' }}</span>
+                    </div>
+                    <div class="user-avatar">
+                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                    </div>
                 </div>
+                
+                <form action="{{ route('logout') }}" method="POST" class="ms-2 border-start ps-3 border-2">
+                    @csrf
+                    <button type="submit" class="btn btn-light btn-sm d-flex align-items-center gap-2">
+                        <i class="ph ph-sign-out"></i> <span class="d-none d-md-inline">Logout</span>
+                    </button>
+                </form>
             </div>
-        </div>
-    </nav>
-    @endauth
+        </header>
 
-    <main class="py-4">
-        <div class="container">
+        <!-- Main Content -->
+        <main class="main-content">
             @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: '{!! session('success') !!}',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+                    });
+                </script>
             @endif
 
             @if(session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal!',
+                            text: '{!! session('error') !!}',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+                    });
+                </script>
+            @endif
+
+            @if($errors->any())
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Validasi Gagal!',
+                            text: 'Silakan periksa kembali inputan Anda.',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 4000,
+                            timerProgressBar: true
+                        });
+                    });
+                </script>
             @endif
 
             @yield('content')
-        </div>
-    </main>
+        </main>
 
-    <footer class="footer">
-        <div class="container text-center">
-            <small class="text-muted">
-                &copy; {{ date('Y') }} SPK Pemilihan Saham Terbaik Metode Weighted Product
-            </small>
-        </div>
-    </footer>
+        <footer class="footer">
+            &copy; {{ date('Y') }} SPK Pemilihan Saham Terbaik Metode Weighted Product
+        </footer>
+    </div>
+    
+    <!-- Backdrop for mobile sidebar -->
+    <div id="sidebar-backdrop" class="d-none" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 998;"></div>
+    @else
+        <!-- For non-auth pages like login/register -->
+        <main class="py-4">
+            <div class="container">
+                @yield('content')
+            </div>
+        </main>
+    @endauth
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    
+    <script>
+        // Sidebar Toggle Logic for Mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.getElementById('sidebarToggle');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            
+            if(toggleBtn && sidebar) {
+                function toggleSidebar() {
+                    sidebar.classList.toggle('show');
+                    if(sidebar.classList.contains('show')) {
+                        backdrop.classList.remove('d-none');
+                    } else {
+                        backdrop.classList.add('d-none');
+                    }
+                }
+                
+                toggleBtn.addEventListener('click', toggleSidebar);
+                backdrop.addEventListener('click', toggleSidebar);
+            }
+
+            // SweetAlert Delete Confirmation Global
+            const deleteForms = document.querySelectorAll('.form-delete');
+            deleteForms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: 'Apakah Anda yakin?',
+                        text: "Data yang dihapus tidak dapat dikembalikan!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#ef4444',
+                        cancelButtonColor: '#6b7280',
+                        confirmButtonText: 'Ya, Hapus!',
+                        cancelButtonText: 'Batal',
+                        background: '#ffffff',
+                        borderRadius: '20px'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 </body>
 </html>

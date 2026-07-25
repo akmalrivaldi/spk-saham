@@ -16,6 +16,8 @@ class StockValueController extends Controller
         $selectedPeriod = $request->period_id;
 
         $periods = Period::orderByDesc('year')->get();
+        $stocks = Stock::where('is_active', true)->orderBy('code')->get();
+        $criteria = Criterion::orderBy('code')->get();
 
         $query = StockValue::with(['stock', 'period', 'criterion']);
 
@@ -33,19 +35,22 @@ class StockValueController extends Controller
                 $first = $items->first();
 
                 $criterionValues = [];
+                $originalValues = [];
                 foreach ($items as $item) {
                     $criterionValues[$item->criterion->name] = $item->value;
+                    $originalValues[$item->criterion_id] = $item->value;
                 }
 
                 return [
                     'stock' => $first->stock,
                     'period' => $first->period,
                     'values' => $criterionValues,
+                    'original_values' => $originalValues,
                 ];
             })
             ->values();
 
-        return view('stock-values.index', compact('groupedValues', 'periods', 'selectedPeriod'));
+        return view('stock-values.index', compact('groupedValues', 'periods', 'selectedPeriod', 'stocks', 'criteria'));
     }
 
     public function create()
