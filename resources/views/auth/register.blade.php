@@ -75,6 +75,32 @@
             box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
         }
 
+        .password-input {
+            padding-right: 45px !important;
+        }
+
+        .password-input.is-invalid {
+            padding-right: 75px !important;
+            background-position: right 45px center !important;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            z-index: 10;
+            color: #6B7280;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary-color);
+        }
+
         .form-label {
             font-weight: 600;
             color: var(--text-dark);
@@ -164,7 +190,12 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Password</label>
-                                <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="••••••••" required>
+                                <div class="position-relative">
+                                    <input type="password" name="password" class="form-control password-input @error('password') is-invalid @enderror" placeholder="••••••••" required>
+                                    <span class="password-toggle" onclick="togglePassword(this)" title="Tampilkan/Sembunyikan Password">
+                                        <i class="ph ph-eye fs-5"></i>
+                                    </span>
+                                </div>
                                 @error('password')
                                     <div class="invalid-feedback d-block mt-1">{{ $message }}</div>
                                 @enderror
@@ -172,7 +203,12 @@
 
                             <div class="mb-4">
                                 <label class="form-label">Konfirmasi Password</label>
-                                <input type="password" name="password_confirmation" class="form-control" placeholder="••••••••" required>
+                                <div class="position-relative">
+                                    <input type="password" name="password_confirmation" class="form-control password-input" placeholder="••••••••" required>
+                                    <span class="password-toggle" onclick="togglePassword(this)" title="Tampilkan/Sembunyikan Password">
+                                        <i class="ph ph-eye fs-5"></i>
+                                    </span>
+                                </div>
                             </div>
 
                             <button type="submit" class="btn btn-primary w-100 btn-login d-flex justify-content-center align-items-center gap-2">
@@ -192,5 +228,21 @@
     </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+<script>
+    function togglePassword(iconSpan) {
+        const container = iconSpan.closest('.position-relative');
+        const input = container.querySelector('.password-input');
+        const icon = iconSpan.querySelector('i');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('ph-eye');
+            icon.classList.add('ph-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('ph-eye-slash');
+            icon.classList.add('ph-eye');
+        }
+    }
+</script>
 </body>
 </html>

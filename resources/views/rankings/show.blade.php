@@ -26,7 +26,7 @@
             <div class="alert alert-success mb-0">
                 <strong>Peringkat 1:</strong>
                 {{ $rankings->first()->stock->code }} - {{ $rankings->first()->stock->name }}
-                dengan nilai preferensi <strong>{{ number_format($rankings->first()->vector_v, 10) }}</strong>
+                dengan nilai preferensi <strong>{{ number_format($rankings->first()->vector_v, 4) }}</strong>
             </div>
         @endif
     </div>
@@ -61,8 +61,8 @@
                         </td>
                         <td>{{ $ranking->stock->code }}</td>
                         <td>{{ $ranking->stock->name }}</td>
-                        <td>{{ number_format($ranking->vector_s, 10) }}</td>
-                        <td>{{ number_format($ranking->vector_v, 10) }}</td>
+                        <td>{{ number_format($ranking->vector_s, 4) }}</td>
+                        <td>{{ number_format($ranking->vector_v, 4) }}</td>
                         <td>
                             <a href="{{ route('rankings.detail', [$period->id, $ranking->stock->id]) }}" class="btn btn-info btn-sm text-white">
                                 Detail

@@ -95,7 +95,7 @@
                         </td>
                         <td>
                             @if($item['original_vector_v'] !== null)
-                                {{ number_format($item['original_vector_v'], 10) }}
+                                {{ number_format($item['original_vector_v'], 4) }}
                             @else
                                 <span class="text-muted">-</span>
                             @endif
@@ -111,7 +111,7 @@
                                 <span class="badge bg-secondary fs-6">#{{ $item['sim_rank'] }}</span>
                             @endif
                         </td>
-                        <td>{{ number_format($item['sim_vector_v'], 10) }}</td>
+                        <td>{{ number_format($item['sim_vector_v'], 4) }}</td>
                         <td class="text-center">
                             @if($item['rank_change'] === null)
                                 <span class="badge bg-secondary">—</span>

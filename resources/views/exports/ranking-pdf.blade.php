@@ -133,8 +133,8 @@
                     <td>{{ $ranking->stock->code }}</td>
                     <td>{{ $ranking->stock->name }}</td>
                     <td>{{ $ranking->stock->issuer }}</td>
-                    <td>{{ number_format($ranking->vector_s, 10) }}</td>
-                    <td>{{ number_format($ranking->vector_v, 10) }}</td>
+                    <td>{{ number_format($ranking->vector_s, 4) }}</td>
+                    <td>{{ number_format($ranking->vector_v, 4) }}</td>
                 </tr>
             @endforeach
         </tbody>

@@ -26,15 +26,15 @@
             </tr>
             <tr>
                 <th>Vektor S</th>
-                <td>{{ number_format($vectorS, 10) }}</td>
+                <td>{{ number_format($vectorS, 4) }}</td>
             </tr>
             <tr>
                 <th>Jumlah Total S</th>
-                <td>{{ number_format($sumS, 10) }}</td>
+                <td>{{ number_format($sumS, 4) }}</td>
             </tr>
             <tr>
                 <th>Vektor V</th>
-                <td>{{ number_format($vectorV, 10) }}</td>
+                <td>{{ number_format($vectorV, 4) }}</td>
             </tr>
         </table>
     </div>

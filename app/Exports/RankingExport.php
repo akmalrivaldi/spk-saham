@@ -57,8 +57,8 @@ class RankingExport implements FromCollection, WithHeadings, WithMapping, WithTi
             $ranking->stock->code,
             $ranking->stock->name,
             $ranking->stock->issuer,
-            number_format($ranking->vector_s, 10),
-            number_format($ranking->vector_v, 10),
+            number_format($ranking->vector_s, 4),
+            number_format($ranking->vector_v, 4),
         ];
     }
 
